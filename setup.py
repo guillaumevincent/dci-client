@@ -23,7 +23,7 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 readme = open(os.path.join(root_dir, 'README.md')).read()
 
 setuptools.setup(
-    name='dciauth',
+    name='dciclient',
     version=version.__version__,
     packages=['client'],
     author='Distributed CI team',
@@ -33,7 +33,7 @@ setuptools.setup(
     install_requires=[],
     entry_points="""
         [console_scripts]
-        dcictl=client.cli:cli
+        dcictl=client.core:main
     """,
     url='https://github.com/redhat-cip/dci-client',
     license='Apache v2.0',
