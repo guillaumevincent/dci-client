@@ -73,11 +73,19 @@ class TestParseArgs(unittest.TestCase):
         self.assertEqual(args.verbose, True)
 
     def test_parse_args_command(self):
-        args = parse_args(["list-jobs"])
-        self.assertEqual(args.command, "list-jobs")
+        args = parse_args(["list"])
+        self.assertEqual(args.command, "list")
+
+    def test_parse_args_command_lowercase(self):
+        args = parse_args(["LIST"])
+        self.assertEqual(args.command, "list")
+
+    def test_parse_args_resource(self):
+        args = parse_args(["list", "jobs"])
+        self.assertEqual(args.resource, "jobs")
 
     def test_parse_args_limit(self):
-        args = parse_args(["list-jobs", "--limit", "1"])
+        args = parse_args(["list", "jobs", "--limit", "1"])
         self.assertEqual(args.limit, 1)
 
     def test_parse_args_default_limit(self):
@@ -85,7 +93,7 @@ class TestParseArgs(unittest.TestCase):
         self.assertEqual(args.limit, 10)
 
     def test_parse_args_sort(self):
-        args = parse_args(["list-jobs", "--sort", "created_at"])
+        args = parse_args(["list", "jobs", "--sort", "created_at"])
         self.assertEqual(args.sort, "created_at")
 
     def test_parse_args_default_sort(self):
@@ -93,11 +101,13 @@ class TestParseArgs(unittest.TestCase):
         self.assertEqual(args.sort, None)
 
     def test_parse_args_where(self):
-        args = parse_args(["list-jobs", "--where", "team_id:abc"])
+        args = parse_args(["list", "jobs", "--where", "team_id=abc"])
         self.assertEqual(args.where, [{"key": "team_id", "value": "abc"}])
 
     def test_parse_args_multiple_where(self):
-        args = parse_args(["list-jobs", "--where", "team_id:abc,remoteci_id:def"])
+        args = parse_args(
+            ["list", "jobs", "--where", "team_id=abc", "--where", "remoteci_id=def"]
+        )
         self.assertEqual(
             args.where,
             [
